@@ -1,5 +1,7 @@
 package backend.academy;
 
+import lombok.Getter;
+
 public enum HttpStatusCode {
 
     //1xx: Informational
@@ -73,7 +75,9 @@ public enum HttpStatusCode {
     NOT_EXTENDED(510, "Not Extended"),
     NETWORK_AUTHENTICATION_REQUIRED(511, "Network Authentication Required");
 
+    @Getter
     private final int value;
+    @Getter
     private final String description;
 
     HttpStatusCode(int value, String description) {

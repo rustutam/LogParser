@@ -1,15 +1,16 @@
 package backend.academy.model;
 
-import java.time.ZonedDateTime;
+import backend.academy.HttpStatusCode;
+import java.time.LocalDateTime;
 
 public record LogRecord(
     String ip,
     String user,
-    ZonedDateTime timeLocal,
+    LocalDateTime timeLocal,
     String requestMethod,
     String requestResource,
     String protocolVersion,
-    int responseCode,
+    HttpStatusCode responseCode,
     long bodyBytesSize,
     String referer,
     String userAgent
