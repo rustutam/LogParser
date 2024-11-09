@@ -1,14 +1,16 @@
 package backend.academy.config;
 
-import java.time.ZonedDateTime;
+import backend.academy.filters.LogFilterField;
+import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 //Хранит параметры, полученные из командной строки, и предоставляет к ним доступ.
-public record AppConfig (
+public record AppConfig(
     String inputFilePath,
-    ZonedDateTime startDate,
-    ZonedDateTime endDate,
-    String format,
-    Map<String, Object> filters
+    Optional<LocalDateTime> startDate,
+    Optional<LocalDateTime> endDate,
+    Optional<String> format,
+    Map<LogFilterField, Object> filters
 ) {
 }
