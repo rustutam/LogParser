@@ -103,4 +103,10 @@ public enum HttpStatusCode {
         }
         throw new IllegalArgumentException("Invalid status code: " + value);
     }
+
+    public static void main(String[] args) {
+        HttpStatusCode a = HttpStatusCode.getByValue(200);
+        System.out.println(a.description);
+        System.out.println(a.value);
+    }
 }

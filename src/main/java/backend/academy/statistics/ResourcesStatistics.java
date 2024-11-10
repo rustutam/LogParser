@@ -1,8 +1,8 @@
 package backend.academy.statistics;
 
 import backend.academy.model.LogRecord;
-import backend.academy.report.Report;
-import backend.academy.report.ResourcesStatisticsReport;
+import backend.academy.statistics.report.Report;
+import backend.academy.statistics.report.ResourcesStatisticsReport;
 import java.util.HashMap;
 import lombok.Getter;
 

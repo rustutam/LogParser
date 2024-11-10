@@ -1,4 +1,4 @@
-package backend.academy.report;
+package backend.academy.statistics.report;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package backend.academy.report;
+package backend.academy.statistics.report;
 
 import backend.academy.HttpStatusCode;
 import java.util.HashMap;

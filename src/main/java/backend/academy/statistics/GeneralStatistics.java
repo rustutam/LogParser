@@ -1,8 +1,8 @@
 package backend.academy.statistics;
 
 import backend.academy.model.LogRecord;
-import backend.academy.report.GeneralStatisticsReport;
-import backend.academy.report.Report;
+import backend.academy.statistics.report.GeneralStatisticsReport;
+import backend.academy.statistics.report.Report;
 import com.google.common.math.Quantiles;
 import com.google.common.math.Stats;
 import java.time.LocalDateTime;

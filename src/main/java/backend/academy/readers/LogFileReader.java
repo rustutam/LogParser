@@ -24,7 +24,6 @@ public class LogFileReader implements Reader {
         }
         return Stream.empty();
 
-
     }
 
 }

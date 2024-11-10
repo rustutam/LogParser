@@ -1,9 +1,9 @@
 package backend.academy.output;
 
-import backend.academy.report.GeneralStatisticsReport;
-import backend.academy.report.Report;
-import backend.academy.report.ResourcesStatisticsReport;
-import backend.academy.report.ResponseCodesStatisticsReport;
+import backend.academy.statistics.report.GeneralStatisticsReport;
+import backend.academy.statistics.report.Report;
+import backend.academy.statistics.report.ResourcesStatisticsReport;
+import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import java.io.PrintStream;
 
 public class ConsoleOutput extends StatisticsOutput {

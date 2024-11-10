@@ -1,6 +1,6 @@
 package backend.academy.output;
 
-import backend.academy.report.Report;
+import backend.academy.statistics.report.Report;
 import backend.academy.statistics.Statistics;
 import java.io.PrintStream;
 import java.util.List;

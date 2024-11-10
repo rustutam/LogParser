@@ -2,8 +2,8 @@ package backend.academy.statistics;
 
 import backend.academy.HttpStatusCode;
 import backend.academy.model.LogRecord;
-import backend.academy.report.Report;
-import backend.academy.report.ResponseCodesStatisticsReport;
+import backend.academy.statistics.report.Report;
+import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import lombok.Getter;
 
 import java.util.HashMap;
