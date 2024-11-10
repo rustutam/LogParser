@@ -37,7 +37,8 @@ public class MarkdownFileOutput extends StatisticsOutput{
         out.println();
         out.println("|     Ресурс      | Количество |");
         out.println("|:---------------:|-----------:|");
-        report.resources().forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
+        getTopNElements(report.resources(), filterValue)
+            .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
         out.println();
         out.println();
     }
@@ -50,7 +51,8 @@ public class MarkdownFileOutput extends StatisticsOutput{
         out.println();
         out.println("| Код |          Имя          | Количество |");
         out.println("|:---:|:---------------------:|-----------:|");
-        report.responseCodes().forEach((code, count) ->
+        getTopNElements(report.responseCodes(),filterValue)
+            .forEach((code, count) ->
             out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
         );
         out.println();

@@ -36,7 +36,8 @@ public class AsciiDocFileOutput extends StatisticsOutput {
         out.println();
         out.println("| Resource | Count |");
         out.println("|----------|-------|");
-        report.resources().forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
+        getTopNElements(report.resources(), filterValue)
+            .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
         out.println();
     }
 
@@ -48,9 +49,10 @@ public class AsciiDocFileOutput extends StatisticsOutput {
         out.println();
         out.println("| Code | Description | Count |");
         out.println("|------|-------------|-------|");
-        report.responseCodes().forEach((code, count) ->
-            out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
-        );
+        getTopNElements(report.responseCodes(), filterValue)
+            .forEach((code, count) ->
+                out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
+            );
         out.println();
     }
 }
