@@ -2,6 +2,7 @@ package backend.academy.output;
 
 import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
+import backend.academy.statistics.report.HttpMethodStatisticsReport;
 import backend.academy.statistics.report.Report;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
@@ -54,6 +55,18 @@ public class AsciiDocFileOutput extends StatisticsOutput {
             .forEach((code, count) ->
                 out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
             );
+        out.println();
+    }
+
+    @Override
+    protected void printHttpMethodStatistics(Report statisticReport, PrintStream out) {
+        HttpMethodStatisticsReport report = (HttpMethodStatisticsReport) statisticReport;
+        out.println("== Requested Resources");
+        out.println();
+        out.println("| Resource | Count |");
+        out.println("|----------|-------|");
+        getTopNElements(report.methods(), Settings.FILTER_VALUE)
+            .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
         out.println();
     }
 }

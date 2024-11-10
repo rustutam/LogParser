@@ -2,6 +2,7 @@ package backend.academy.output;
 
 import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
+import backend.academy.statistics.report.HttpMethodStatisticsReport;
 import backend.academy.statistics.report.Report;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
@@ -52,6 +53,16 @@ public class ConsoleOutput extends StatisticsOutput {
         out.println();
         out.println();
 
+    }
+    @Override
+    protected void printHttpMethodStatistics(Report statisticReport, PrintStream out) {
+        HttpMethodStatisticsReport report = (HttpMethodStatisticsReport) statisticReport;
+        out.println("МЕТОДЫ HTTP");
+        out.println();
+        getTopNElements(report.methods(), Settings.FILTER_VALUE)
+            .forEach((resource, count) -> out.println(resource + ": " + count));
+        out.println();
+        out.println();
     }
 
 }

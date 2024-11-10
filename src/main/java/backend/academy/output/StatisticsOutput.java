@@ -23,8 +23,15 @@ public abstract class StatisticsOutput {
                 case "ResponseCodesStatisticsReport" -> {
                     printResponseCodesStatistics(staticticReport, out);
                 }
+                case "HttpMethodStatisticsReport" -> {
+                    printHttpMethodStatistics(staticticReport, out);
+                }
             }
         }
+    }
+
+    protected void printHttpMethodStatistics(Report staticticReport, PrintStream out) {
+
     }
 
     protected void printGeneralStatistics(Report statisticReport, PrintStream out) {
@@ -49,4 +56,6 @@ public abstract class StatisticsOutput {
                 LinkedHashMap::new
             ));
     }
+
+
 }
