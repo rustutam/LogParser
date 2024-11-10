@@ -1,12 +1,15 @@
 package backend.academy.statistics;
 
 import backend.academy.model.LogRecord;
-import lombok.Getter;
+import backend.academy.report.Report;
+import backend.academy.report.ResourcesStatisticsReport;
 import java.util.HashMap;
+import lombok.Getter;
 
-public class ResourcesStatistics implements Statistics{
-    @Getter
+@Getter public class ResourcesStatistics implements Statistics{
+    private static final String statisticsName = "Запрашиваемые ресурсы";
     private HashMap<String, Integer> resources = new HashMap<>();
+
     @Override
     public void updateStatistics(LogRecord logRecord) {
         String requestResource = logRecord.requestResource();
@@ -17,5 +20,10 @@ public class ResourcesStatistics implements Statistics{
             resources.put(requestResource, 1);
         }
 
+    }
+
+    @Override
+    public Report getReport() {
+        return new ResourcesStatisticsReport(statisticsName, resources);
     }
 }
