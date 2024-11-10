@@ -19,31 +19,15 @@ public class LogFilter {
         }
 
         // Check date range
-        boolean withinDateRange = isWithinDateRange(record);
-        if (!withinDateRange) {
+        if (!isWithinDateRange(record)) {
             return false;
         }
 
         // Check filters
         for (Map.Entry<LogFilterField, Object> entry : config.filters().entrySet()) {
-            LogFilterField field = entry.getKey();
-            boolean logRecordFlag = switch (field) {
-                case IP -> checkIp(record);
-                case USER -> checkUser(record);
-                case DATA -> checkData(record);
-                case REQUEST_METHOD -> checkRequestMethod(record);
-                case REQUEST_RESOURCE -> checkRequestResource(record);
-                case REQUEST_PROTOCOL_VERSION -> checkRequestProtocolVersion(record);
-                case RESPONSE_STATUS -> checkResponseStatus(record);
-                case BODY_BYTES_SENT -> checkBodyBytesSent(record);
-                case REFERER -> checkReferer(record);
-                case USER_AGENT -> checkUserAgent(record);
-            };
-
-            if (!logRecordFlag) {
+            if (!checkField(record, entry.getKey(), entry.getValue())) {
                 return false;
             }
-
         }
 
         return true;
@@ -52,7 +36,6 @@ public class LogFilter {
     private boolean isWithinDateRange(LogRecord record) {
         Optional<LocalDateTime> startDateOpt = config.startDate();
         Optional<LocalDateTime> endDateOpt = config.endDate();
-
         LocalDateTime logDate = record.timeLocal();
 
         if (startDateOpt.isPresent() && endDateOpt.isPresent()) {
@@ -69,54 +52,18 @@ public class LogFilter {
         return true;
     }
 
-    private boolean checkIp(LogRecord record) {
-        Object ip = config.filters().get(LogFilterField.IP);
-        return record.ip().equals(ip);
+    private boolean checkField(LogRecord record, LogFilterField field, Object value) {
+        return switch (field) {
+            case IP -> record.ip().equals(value);
+            case USER -> record.user().equals(value);
+            case DATA -> record.timeLocal().isEqual((LocalDateTime) value);
+            case REQUEST_METHOD -> record.request().requestMethod().equals(value);
+            case REQUEST_RESOURCE -> record.request().requestResource().equals(value);
+            case REQUEST_PROTOCOL_VERSION -> record.request().protocolVersion().equals(value);
+            case RESPONSE_STATUS -> record.responseCode().value() == (int) value;
+            case BODY_BYTES_SENT -> record.bodyBytesSize() == (int) value;
+            case REFERER -> record.referer().equals(value);
+            case USER_AGENT -> record.userAgent().contains((String) value);
+        };
     }
-
-    private boolean checkUser(LogRecord record) {
-        Object user = config.filters().get(LogFilterField.USER);
-        return record.user().equals(user);
-    }
-
-    private boolean checkData(LogRecord record) {
-        LocalDateTime dataFilter = (LocalDateTime) config.filters().get(LogFilterField.DATA);
-        return record.timeLocal().isEqual(dataFilter);
-    }
-
-    private boolean checkRequestMethod(LogRecord record) {
-        Object requestMethod = config.filters().get(LogFilterField.REQUEST_METHOD);
-        return record.requestMethod().equals(requestMethod);
-    }
-
-    private boolean checkRequestResource(LogRecord record) {
-        Object requestUrl = config.filters().get(LogFilterField.REQUEST_RESOURCE);
-        return record.requestResource().equals(requestUrl);
-    }
-
-    private boolean checkRequestProtocolVersion(LogRecord record) {
-        Object requestProtocolVersion = config.filters().get(LogFilterField.REQUEST_PROTOCOL_VERSION);
-        return record.protocolVersion().equals(requestProtocolVersion);
-    }
-
-    private boolean checkResponseStatus(LogRecord record) {
-        int responseStatus = (int) config.filters().get(LogFilterField.RESPONSE_STATUS);
-        return record.responseCode().value() == responseStatus;
-    }
-
-    private boolean checkBodyBytesSent(LogRecord record) {
-        int bodyBytesSent = (int) config.filters().get(LogFilterField.BODY_BYTES_SENT);
-        return record.bodyBytesSize() == bodyBytesSent;
-    }
-
-    private boolean checkReferer(LogRecord record) {
-        Object referer = config.filters().get(LogFilterField.REFERER);
-        return record.referer().equals(referer);
-    }
-
-    private boolean checkUserAgent(LogRecord record) {
-        Object userAgent = config.filters().get(LogFilterField.USER_AGENT);
-        return record.userAgent().equals(userAgent);
-    }
-
 }

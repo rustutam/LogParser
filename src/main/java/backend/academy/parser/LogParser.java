@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import backend.academy.model.RequestModel;
 import lombok.extern.log4j.Log4j2;
 import static java.lang.Integer.parseInt;
 
@@ -40,6 +41,9 @@ public class LogParser {
                 String requestMethod = matcher.group(4);
                 String resource = matcher.group(5);
                 String protocolVersion = matcher.group(6);
+
+                RequestModel request = new RequestModel(requestMethod, resource, protocolVersion);
+
                 HttpStatusCode responseCode = HttpStatusCode.getByValue(parseInt(matcher.group(7)));
                 long bodyBytesSent = Long.parseLong(matcher.group(8));
                 String referer = matcher.group(9);
@@ -49,9 +53,7 @@ public class LogParser {
                     ip,
                     user,
                     dateTime,
-                    requestMethod,
-                    resource,
-                    protocolVersion,
+                    request,
                     responseCode,
                     bodyBytesSent,
                     referer,
