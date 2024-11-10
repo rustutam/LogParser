@@ -1,6 +1,7 @@
 package backend.academy.parser;
 
 import backend.academy.HttpStatusCode;
+import backend.academy.config.Settings;
 import backend.academy.model.LogRecord;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,19 +36,19 @@ public class LogParser {
         Matcher matcher = LOG_PATTERN.matcher(logLine);
         if (matcher.matches()) {
             try {
-                String ip = matcher.group(1);
-                String user = matcher.group(2);
-                LocalDateTime dateTime = LocalDateTime.parse(matcher.group(3), DATE_FORMATTER);
-                String requestMethod = matcher.group(4);
-                String resource = matcher.group(5);
-                String protocolVersion = matcher.group(6);
+                String ip = matcher.group(Settings.IP_GROUP);
+                String user = matcher.group(Settings.USER_GROUP);
+                LocalDateTime dateTime = LocalDateTime.parse(matcher.group(Settings.DATE_TIME_GROUP), DATE_FORMATTER);
+                String requestMethod = matcher.group(Settings.REQUEST_METHOD_GROUP);
+                String resource = matcher.group(Settings.RESOURCE_GROUP);
+                String protocolVersion = matcher.group(Settings.PROTOCOL_VERSION_GROUP);
 
                 RequestModel request = new RequestModel(requestMethod, resource, protocolVersion);
 
-                HttpStatusCode responseCode = HttpStatusCode.getByValue(parseInt(matcher.group(7)));
-                long bodyBytesSent = Long.parseLong(matcher.group(8));
-                String referer = matcher.group(9);
-                String userAgent = matcher.group(10);
+                HttpStatusCode responseCode = HttpStatusCode.getByValue(parseInt(matcher.group(Settings.RESPONSE_CODE_GROUP)));
+                long bodyBytesSent = Long.parseLong(matcher.group(Settings.BODY_BYTES_SENT_GROUP));
+                String referer = matcher.group(Settings.REFERER_GROUP);
+                String userAgent = matcher.group(Settings.USER_AGENT_GROUP);
 
                 return Optional.of(new LogRecord(
                     ip,

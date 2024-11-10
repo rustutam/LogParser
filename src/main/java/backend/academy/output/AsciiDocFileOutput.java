@@ -1,5 +1,6 @@
 package backend.academy.output;
 
+import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
 import backend.academy.statistics.report.Report;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
@@ -36,7 +37,7 @@ public class AsciiDocFileOutput extends StatisticsOutput {
         out.println();
         out.println("| Resource | Count |");
         out.println("|----------|-------|");
-        getTopNElements(report.resources(), filterValue)
+        getTopNElements(report.resources(), Settings.FILTER_VALUE)
             .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
         out.println();
     }
@@ -49,7 +50,7 @@ public class AsciiDocFileOutput extends StatisticsOutput {
         out.println();
         out.println("| Code | Description | Count |");
         out.println("|------|-------------|-------|");
-        getTopNElements(report.responseCodes(), filterValue)
+        getTopNElements(report.responseCodes(), Settings.FILTER_VALUE)
             .forEach((code, count) ->
                 out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
             );

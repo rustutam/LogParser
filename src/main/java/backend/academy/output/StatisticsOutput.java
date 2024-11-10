@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class StatisticsOutput {
-    protected final int filterValue = 3;
 
     public void print(List<Statistics> statisticsList, PrintStream out) {
         for (Statistics statistics : statisticsList) {
