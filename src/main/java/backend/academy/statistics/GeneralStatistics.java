@@ -34,8 +34,8 @@ public class GeneralStatistics implements Statistics {
 
     @Override
     public Report getReport() {
-        double percentile95 = Quantiles.percentiles().index(95).compute(responseSizes);
-        double mean = Stats.meanOf(responseSizes);
+        double percentile95 = round(Quantiles.percentiles().index(95).compute(responseSizes));
+        double mean = round(Stats.meanOf(responseSizes));
 
         return new GeneralStatisticsReport(
             STATISTICS_NAME,
@@ -46,5 +46,8 @@ public class GeneralStatistics implements Statistics {
             mean,
             percentile95
         );
+    }
+    private double round(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 }
