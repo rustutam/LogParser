@@ -12,7 +12,7 @@ import lombok.Getter;
 
     @Override
     public void updateStatistics(LogRecord logRecord) {
-        String requestResource = logRecord.requestResource();
+        String requestResource = logRecord.request().requestResource();
 
         if(resources.containsKey(requestResource)){
             resources.put(requestResource, resources.get(requestResource) + 1);
