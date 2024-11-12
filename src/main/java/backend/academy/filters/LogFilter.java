@@ -3,7 +3,6 @@ package backend.academy.filters;
 import backend.academy.config.AppConfig;
 import backend.academy.model.LogRecord;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 
 public class LogFilter {
@@ -14,23 +13,19 @@ public class LogFilter {
     }
 
     public boolean filter(LogRecord record) {
-        if (record == null) {
-            return false;
-        }
-
         // Check date range
         if (!isWithinDateRange(record)) {
             return false;
         }
 
         // Check filters
-        for (Map.Entry<LogFilterField, Object> entry : config.filters().entrySet()) {
-            if (!checkField(record, entry.getKey(), entry.getValue())) {
+        for (FilterField<?> filterField : config.filterFieldList()) {
+            if (!checkField(record, filterField)) {
                 return false;
             }
         }
 
-        return true;
+            return true;
     }
 
     private boolean isWithinDateRange(LogRecord record) {
@@ -52,18 +47,22 @@ public class LogFilter {
         return true;
     }
 
-    private boolean checkField(LogRecord record, LogFilterField field, Object value) {
-        return switch (field) {
-            case IP -> record.ip().equals(value);
-            case USER -> record.user().equals(value);
-            case DATA -> record.timeLocal().isEqual((LocalDateTime) value);
-            case REQUEST_METHOD -> record.request().requestMethod().equals(value);
-            case REQUEST_RESOURCE -> record.request().requestResource().equals(value);
-            case REQUEST_PROTOCOL_VERSION -> record.request().protocolVersion().equals(value);
-            case RESPONSE_STATUS -> record.responseCode().value() == (int) value;
-            case BODY_BYTES_SENT -> record.bodyBytesSize() == (int) value;
-            case REFERER -> record.referer().equals(value);
-            case USER_AGENT -> record.userAgent().contains((String) value);
+    private boolean checkField(LogRecord record, FilterField<?> filterField) {
+
+        return switch (filterField) {
+            case IpFilterField ignored -> record.ip().equals(filterField.value);
+            case UserFilterField ignored -> record.user().equals(filterField.value);
+            case DataFilterField ignored -> record.timeLocal().isEqual((LocalDateTime) filterField.value);
+            case MethodFilterField ignored -> record.request().requestMethod().equals(filterField.value);
+            case ResourceFilterField ignored -> record.request().requestResource().equals(filterField.value);
+            case ProtocolFilterField ignored -> record.request().protocolVersion().equals(filterField.value);
+            case ResponseCodeFilterField ignored -> record.responseCode().value() == ((int) filterField.value);
+            case BytesFilterField ignored -> record.bodyBytesSize() == (int) filterField.value;
+            case RefererFilterField ignored -> record.referer().equals(filterField.value);
+            case AgentFilterField ignored -> record.userAgent().contains((String) filterField.value);
+            default -> throw new IllegalStateException("Unexpected value: " + filterField);
         };
     }
+
 }
+

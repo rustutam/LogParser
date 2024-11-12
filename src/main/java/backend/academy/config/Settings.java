@@ -1,5 +1,7 @@
 package backend.academy.config;
 
+import java.time.format.DateTimeFormatter;
+
 public class Settings {
     public static final int IP_GROUP = 1;
     public static final int USER_GROUP = 2;
@@ -13,4 +15,6 @@ public class Settings {
     public static final int USER_AGENT_GROUP = 10;
 
     public static final int FILTER_VALUE = 3;
+
+    public static final DateTimeFormatter INPUT_DATA_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 }

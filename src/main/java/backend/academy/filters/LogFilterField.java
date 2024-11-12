@@ -7,7 +7,7 @@ public enum LogFilterField {
     REQUEST_METHOD("method"),
     REQUEST_RESOURCE("resource"),
     REQUEST_PROTOCOL_VERSION("protocol"),
-    RESPONSE_STATUS("status"),
+    RESPONSE_CODE("code"),
     BODY_BYTES_SENT("bytes_size"),
     REFERER("referer"),
     USER_AGENT("agent");
@@ -18,16 +18,14 @@ public enum LogFilterField {
         this.value = value;
     }
 
-    public static LogFilterField getFiled(String value){
+    public static LogFilterField getFiled(String value) throws IllegalArgumentException {
         for (LogFilterField filed: values()){
-            if (filed.value.equals(value)){
+            if (filed.value.equalsIgnoreCase(value)){
                 return filed;
             }
         }
         throw new IllegalArgumentException("Invalid field value: " + value);
     }
-
-    public static void main(String[] args) {
-        System.out.println(LogFilterField.getFiled("ip"));
-    }
 }
+
+
