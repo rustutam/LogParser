@@ -1,5 +1,7 @@
 package backend.academy.filters;
 
+import backend.academy.exceptions.InvalidFilterValueException;
+
 public enum LogFilterField {
     IP("ip"),
     USER("user"),
@@ -18,13 +20,13 @@ public enum LogFilterField {
         this.value = value;
     }
 
-    public static LogFilterField getFiled(String value) throws IllegalArgumentException {
+    public static LogFilterField getFiled(String value) throws InvalidFilterValueException {
         for (LogFilterField filed: values()){
             if (filed.value.equalsIgnoreCase(value)){
                 return filed;
             }
         }
-        throw new IllegalArgumentException("Invalid field value: " + value);
+        throw new InvalidFilterValueException("Invalid field value: " + value);
     }
 }
 

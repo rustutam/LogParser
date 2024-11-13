@@ -1,4 +1,4 @@
 package backend.academy.filters;
 
-public class ResponseCodeFilterField extends IntegerFilterField {
+public final class ResponseCodeFilterField extends IntegerFilterField {
 }

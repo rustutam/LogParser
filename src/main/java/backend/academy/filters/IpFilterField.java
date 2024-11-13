@@ -1,4 +1,4 @@
 package backend.academy.filters;
 
-public class IpFilterField extends StringFilterField {
+public final class IpFilterField extends StringFilterField {
 }

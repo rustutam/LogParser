@@ -1,4 +1,4 @@
 package backend.academy.filters;
 
-public class ResourceFilterField extends StringFilterField{
+public final class ResourceFilterField extends StringFilterField{
 }

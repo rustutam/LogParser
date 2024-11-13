@@ -1,4 +1,4 @@
 package backend.academy.filters;
 
-public class RefererFilterField extends StringFilterField{
+public final class RefererFilterField extends StringFilterField{
 }
