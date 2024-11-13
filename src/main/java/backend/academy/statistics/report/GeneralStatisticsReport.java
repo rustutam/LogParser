@@ -4,12 +4,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public record GeneralStatisticsReport(
-    String statisticsName,
     String fileName,
     Optional<LocalDateTime> startData,
     Optional<LocalDateTime> endData,
     int requestCount,
     double averageResponseSize,
     double percentiles95
-) implements Report{
+) implements Report {
 }

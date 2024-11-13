@@ -3,31 +3,20 @@ package backend.academy.statistics;
 import backend.academy.HttpStatusCode;
 import backend.academy.model.LogRecord;
 import backend.academy.statistics.report.Report;
+import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import lombok.Getter;
 
 import java.util.HashMap;
 
-@Getter
-public class ResponseCodesStatistics implements Statistics {
-    private static final String statisticsName = "Коды ответа";
-    private final HashMap<HttpStatusCode, Integer> responseCodes = new HashMap<>();
-
+public final class ResponseCodesStatistics extends NameCountStatistics<HttpStatusCode> {
     @Override
-    public void updateStatistics(LogRecord logRecord) {
-        HttpStatusCode responseCode = logRecord.responseCode();
-
-        if (responseCodes.containsKey(responseCode)) {
-            responseCodes.put(responseCode, responseCodes.get(responseCode) + 1);
-        } else {
-            responseCodes.put(responseCode, 1);
-        }
-
-
+    protected HttpStatusCode extractKey(LogRecord logRecord) {
+        return logRecord.responseCode();
     }
 
     @Override
     public Report getReport() {
-        return new ResponseCodesStatisticsReport(statisticsName, responseCodes);
+        return new ResponseCodesStatisticsReport(statistics);
     }
 }

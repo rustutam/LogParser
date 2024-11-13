@@ -6,24 +6,14 @@ import backend.academy.statistics.report.ResourcesStatisticsReport;
 import java.util.HashMap;
 import lombok.Getter;
 
-@Getter public class ResourcesStatistics implements Statistics{
-    private static final String statisticsName = "Запрашиваемые ресурсы";
-    private HashMap<String, Integer> resources = new HashMap<>();
-
+@Getter public final class ResourcesStatistics extends NameCountStatistics<String> {
     @Override
-    public void updateStatistics(LogRecord logRecord) {
-        String requestResource = logRecord.request().requestResource();
-
-        if(resources.containsKey(requestResource)){
-            resources.put(requestResource, resources.get(requestResource) + 1);
-        } else {
-            resources.put(requestResource, 1);
-        }
-
+    protected String extractKey(LogRecord logRecord) {
+        return logRecord.request().requestResource();
     }
 
     @Override
     public Report getReport() {
-        return new ResourcesStatisticsReport(statisticsName, resources);
+        return new ResourcesStatisticsReport(statistics);
     }
 }

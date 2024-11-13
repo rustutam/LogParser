@@ -1,4 +1,6 @@
 package backend.academy.statistics.report;
 
-public interface Report {
+public sealed interface Report
+    permits GeneralStatisticsReport, HttpMethodStatisticsReport, ResponseCodesStatisticsReport,
+    ResourcesStatisticsReport {
 }

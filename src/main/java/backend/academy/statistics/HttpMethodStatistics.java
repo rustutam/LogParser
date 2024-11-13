@@ -3,24 +3,15 @@ package backend.academy.statistics;
 import backend.academy.model.LogRecord;
 import backend.academy.statistics.report.HttpMethodStatisticsReport;
 import backend.academy.statistics.report.Report;
-import java.util.HashMap;
 
-public class HttpMethodStatistics implements Statistics{
-    private final String statisticsName = "Методы HTTP";
-    private HashMap<String, Integer> methods = new HashMap<>();
-
+public final class HttpMethodStatistics extends NameCountStatistics<String> {
     @Override
-    public void updateStatistics(LogRecord logRecord) {
-        String requestMethod = logRecord.request().requestMethod();
-
-        if(methods.containsKey(requestMethod)){
-            methods.put(requestMethod, methods.get(requestMethod) + 1);
-        } else {
-            methods.put(requestMethod, 1);
-        }
+    protected String extractKey(LogRecord logRecord) {
+        return logRecord.request().requestMethod();
     }
+
     @Override
     public Report getReport() {
-        return new HttpMethodStatisticsReport(statisticsName, methods);
+        return new HttpMethodStatisticsReport(statistics);
     }
 }
