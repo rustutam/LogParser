@@ -3,17 +3,18 @@ package backend.academy.output;
 import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
 import backend.academy.statistics.report.HttpMethodStatisticsReport;
-import backend.academy.statistics.report.Report;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
-public class MarkdownFileOutput extends StatisticsOutput{
+@Getter
+public class MarkdownFileOutput extends StatisticsOutput {
+    private final String fileName = "report.md";
 
     @Override
-    protected void printGeneralStatistics(Report statisticReport, PrintStream out) {
-        GeneralStatisticsReport report = (GeneralStatisticsReport) statisticReport;
+    protected void printGeneralStatistics(GeneralStatisticsReport report, PrintStream out) {
         String startData = report.startData().map(LocalDateTime::toString).orElse("-");
         String endData = report.endData().map(LocalDateTime::toString).orElse("-");
 
@@ -32,43 +33,37 @@ public class MarkdownFileOutput extends StatisticsOutput{
     }
 
     @Override
-    protected void printResourcesStatistics(Report statisticReport, PrintStream out) {
-        ResourcesStatisticsReport report = (ResourcesStatisticsReport) statisticReport;
-
+    protected void printResourcesStatistics(ResourcesStatisticsReport report, PrintStream out) {
         out.println("#### Запрашиваемые ресурсы");
         out.println();
         out.println("|     Ресурс      | Количество |");
         out.println("|:---------------:|-----------:|");
-        getTopNElements(report.resources(), Settings.FILTER_VALUE)
+        getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
         out.println();
         out.println();
     }
 
     @Override
-    protected void printResponseCodesStatistics(Report statisticReport, PrintStream out) {
-        ResponseCodesStatisticsReport report = (ResponseCodesStatisticsReport) statisticReport;
-
+    protected void printResponseCodesStatistics(ResponseCodesStatisticsReport report, PrintStream out) {
         out.println("#### Коды ответа");
         out.println();
         out.println("| Код |          Имя          | Количество |");
         out.println("|:---:|:---------------------:|-----------:|");
-        getTopNElements(report.responseCodes(), Settings.FILTER_VALUE)
+        getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((code, count) ->
-            out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
-        );
+                out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
+            );
         out.println();
         out.println();
     }
 
-    @Override protected void printHttpMethodStatistics(Report statisticReport, PrintStream out) {
-        HttpMethodStatisticsReport report = (HttpMethodStatisticsReport) statisticReport;
-
+    @Override protected void printHttpMethodStatistics(HttpMethodStatisticsReport report, PrintStream out) {
         out.println("#### Методы Http");
         out.println();
         out.println("|     Метод      | Количество |");
         out.println("|:---------------:|-----------:|");
-        getTopNElements(report.methods(), Settings.FILTER_VALUE)
+        getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
         out.println();
         out.println();
