@@ -1,5 +1,7 @@
 package backend.academy.command_line.converters;
 
+import backend.academy.exceptions.InvalidFilterFieldException;
+import backend.academy.exceptions.InvalidFilterValueException;
 import backend.academy.filters.AgentFilterField;
 import backend.academy.filters.BytesFilterField;
 import backend.academy.filters.DataFilterField;
@@ -14,14 +16,22 @@ import backend.academy.filters.ResponseCodeFilterField;
 import backend.academy.filters.UserFilterField;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class FilterFieldConverter implements IStringConverter<FilterField<?>> {
+    private final String optionName;
+
+    public FilterFieldConverter(String optionName) {
+        this.optionName = optionName;
+    }
     @Override
     public FilterField<?> convert(String value) {
         String[] parts = value.split(":", 2);
 
         if (parts.length != 2) {
-            throw new ParameterException("Filter must be in the format Field,Value");
+            log.error("Фильтр должен быть в формате field:value");
+            throw new ParameterException("Фильтр должен быть в формате field:value");
         }
 
         String maybeField = parts[0];
@@ -30,11 +40,15 @@ public class FilterFieldConverter implements IStringConverter<FilterField<?>> {
         LogFilterField field;
         try {
             field = LogFilterField.getFiled(maybeField);
-        } catch (IllegalArgumentException e) {
-            throw new ParameterException("Invalid LogFilterField: " + parts[0]);
-        }
+            return getFilterField(field, maybeValue);
 
-        return getFilterField(field, maybeValue);
+        } catch (InvalidFilterFieldException e) {
+            log.error("Неверное значение для {}: {}", optionName, maybeField);
+            throw new ParameterException("Неверное значение для " + optionName + ": " + maybeField, e);
+        } catch (InvalidFilterValueException e) {
+            log.error("Неверное значение поля фильтрации {}: {}", maybeField, maybeValue);
+            throw new ParameterException("Неверное значение поля фильтрации " + maybeField + ": " + maybeValue, e);
+        }
     }
 
     private FilterField<?> getFilterField(LogFilterField field, String value) {

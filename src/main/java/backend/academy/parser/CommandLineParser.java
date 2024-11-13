@@ -2,37 +2,48 @@ package backend.academy.parser;
 
 import backend.academy.command_line.CommandLineArgs;
 import backend.academy.config.AppConfig;
-import backend.academy.filters.LogFilterField;
+import backend.academy.filters.FilterField;
 import backend.academy.model.Format;
-import lombok.extern.log4j.Log4j2;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class CommandLineParser {
-    CommandLineArgs commandLineArgs;
+    String[] args;
 
-    public CommandLineParser(CommandLineArgs commandLineArgs){
-        this.commandLineArgs = commandLineArgs;
+    public CommandLineParser(String[] args) {
+        this.args = args;
     }
 
-    public AppConfig parseCommandLine(){
+    public AppConfig parseCommandLine() {
         try {
-            String path = commandLineArgs.path();
+            CommandLineArgs commandLineArgs = getCommandLineArgs();
 
+            String path = commandLineArgs.path();
             Optional<LocalDateTime> from = Optional.ofNullable(commandLineArgs.from());
             Optional<LocalDateTime> to = Optional.ofNullable(commandLineArgs.to());
-            Optional<Format> format = Optional.ofNullable(commandLineArgs.format());
+            Format format = Optional.ofNullable(commandLineArgs.format()).orElse(Format.MD);
+            List<FilterField<?>> filterFields =
+                Optional.ofNullable(commandLineArgs.filterFieldList()).orElse(List.of());
+            return new AppConfig(path, from, to, format, filterFields);
+        } catch (ParameterException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+        return null;
+    }
 
-            Map<LogFilterField, Object> filter = Map.of(
-                commandLineArgs.filterField(),
-                commandLineArgs.filterValue()
-            );
-            return new AppConfig(path, from, to, format, filter);
-        }
-        catch (Exception e){
-            throw new IllegalArgumentException("Error parsing command line arguments", e);
-        }
+    private CommandLineArgs getCommandLineArgs() {
+        CommandLineArgs commandLineArgs = new CommandLineArgs();
+        JCommander.newBuilder()
+            .addObject(commandLineArgs)
+            .build()
+            .parse(args);
+
+        return commandLineArgs;
     }
 }
