@@ -1,17 +1,17 @@
 package backend.academy.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Format {
     MD("markdown"),
-    ADOC("adoc");
+    ADOC("adoc"),
+    CONSOLE("console");
 
     private final String value;
 
     Format(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public static Format getFormat(String value) throws IllegalArgumentException {
