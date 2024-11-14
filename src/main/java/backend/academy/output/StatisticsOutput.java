@@ -52,7 +52,7 @@ public abstract class StatisticsOutput {
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
                 Map.Entry::getValue,
-                (e1, _) -> e1,
+                (e1, e2) -> e1,
                 LinkedHashMap::new
             ));
     }

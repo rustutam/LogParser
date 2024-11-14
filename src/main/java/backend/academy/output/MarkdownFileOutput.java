@@ -11,8 +11,11 @@ import lombok.Getter;
 
 @Getter
 public class MarkdownFileOutput extends StatisticsOutput {
-    protected String markdownFileName = "report.md";
     private static final String SEPARATOR = " | ";
+
+    public MarkdownFileOutput() {
+        this.fileName = "report.md";
+    }
 
     @Override
     protected void printGeneralStatistics(GeneralStatisticsReport report, PrintStream out) {

@@ -18,6 +18,7 @@ import backend.academy.statistics.Statistics;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class App {
     private final AppConfig appConfig;
@@ -41,12 +42,16 @@ public class App {
         LogFilter logFilter = new LogFilter(appConfig);
 
         Reader reader = fileData.reader();
-        reader.readLogs(fileData.filePaths())
-            .map(LogParser::parseLogLine)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .filter(logFilter::filter)
-            .forEach(logRecord -> statistics.forEach(statistic -> statistic.updateStatistics(logRecord)));
+        try (Stream<String> stringStream = reader.readLogs(fileData.filePaths())) {
+            stringStream
+                .map(LogParser::parseLogLine)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(logFilter::filter)
+                .forEach(logRecord -> statistics.forEach(statistic -> statistic.updateStatistics(logRecord)));
+        } catch (Exception e) {
+            out.println("Ошибка при чтении файла: " + e.getMessage());
+        }
 
         StatisticsFileWriter.writeStatisticsToFile(getOutput(appConfig.format()), statistics, out);
     }
