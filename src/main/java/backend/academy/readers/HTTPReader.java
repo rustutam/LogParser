@@ -9,15 +9,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Log4j2
-public class HTTPReader implements Reader{
-    private String url;
-
-    public HTTPReader(String url) {
-        this.url = url;
-    }
-
+public class HTTPReader extends Reader{
     @Override
-    public Stream<String> readLogs() {
+    public Stream<String> readLogs(String url) {
         try{
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
