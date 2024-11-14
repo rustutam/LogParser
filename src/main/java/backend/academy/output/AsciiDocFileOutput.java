@@ -10,8 +10,13 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter public class AsciiDocFileOutput extends StatisticsOutput {
-    protected String asciiFileName = "report.adoc";
+    private static final String COLS_2_1_OPTIONS_HEADER = "[cols=\"2,1\", options=\"header\"]";
+    private static final String COLS_1_2_1_OPTIONS_HEADER = "[cols=\"1,2,1\", options=\"header\"]";
     private static final String SEPARATOR = " | ";
+
+    public AsciiDocFileOutput() {
+        this.fileName = "report.adoc";
+    }
 
     @Override
     protected void printGeneralStatistics(GeneralStatisticsReport report, PrintStream out) {
@@ -20,54 +25,52 @@ import lombok.Getter;
         String sizeUnit = "b";
 
         out.println("== Общая информация");
-        out.println();
-        out.println("|        Метрика         |     Значение |");
-        out.println("|------------------------|--------------|");
-        out.println("|       Файл(-ы)         | " + String.join(", ", report.fileNames()) + " |");
-        out.println("|    Начальная дата      | " + startData + " |");
-        out.println("|     Конечная дата      | " + endData + " |");
-        out.println("|  Количество запросов   | " + report.requestCount() + " |");
+        out.println(COLS_2_1_OPTIONS_HEADER);
+        out.println("|===");
+        out.println("| Метрика                | Значение");
+        out.println("|       Файл(-ы)         | " + String.join(", ", report.fileNames()));
+        out.println("|    Начальная дата      | " + startData);
+        out.println("|     Конечная дата      | " + endData);
+        out.println("|  Количество запросов   | " + report.requestCount());
         out.println("| Средний размер ответа  | " + report.averageResponseSize() + sizeUnit);
         out.println("|   95p размера ответа   | " + report.percentiles95() + sizeUnit);
-        out.println();
-        out.println();
+        out.println("|===");
+
+
     }
 
     @Override
     protected void printResourcesStatistics(ResourcesStatisticsReport report, PrintStream out) {
         out.println("== Запрашиваемые ресурсы");
-        out.println();
-        out.println("|     Ресурс      | Количество |");
-        out.println("|-----------------|------------|");
+        out.println(COLS_2_1_OPTIONS_HEADER);
+        out.println("|===");
+        out.println("|     Ресурс      | Количество");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
-            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
-        out.println();
-        out.println();
+            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count));
+        out.println("|===");
     }
 
     @Override
     protected void printResponseCodesStatistics(ResponseCodesStatisticsReport report, PrintStream out) {
         out.println("== Коды ответа");
-        out.println();
-        out.println("| Код |          Имя          | Количество |");
-        out.println("|-----|-----------------------|------------|");
+        out.println(COLS_1_2_1_OPTIONS_HEADER);
+        out.println("|===");
+        out.println("| Код |          Имя          | Количество");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((code, count) ->
-                out.println("| " + code.value() + SEPARATOR + code.description() + SEPARATOR + count + " |")
+                out.println("| " + code.value() + SEPARATOR + code.description() + SEPARATOR + count)
             );
-        out.println();
-        out.println();
+        out.println("|===");
     }
 
     @Override
     protected void printHttpMethodStatistics(HttpMethodStatisticsReport report, PrintStream out) {
         out.println("== Методы Http");
-        out.println();
-        out.println("|     Метод      | Количество |");
-        out.println("|----------------|------------|");
+        out.println(COLS_2_1_OPTIONS_HEADER);
+        out.println("|===");
+        out.println("|     Метод      | Количество");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
-            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
-        out.println();
-        out.println();
+            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count));
+        out.println("|===");
     }
 }
