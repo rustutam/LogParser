@@ -3,12 +3,11 @@ package backend.academy.output;
 import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
 import backend.academy.statistics.report.HttpMethodStatisticsReport;
-import backend.academy.statistics.report.Report;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
-import lombok.Getter;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 @Getter public class AsciiDocFileOutput extends StatisticsOutput {
     private final String fileName = "report.adoc";
@@ -22,7 +21,7 @@ import java.time.LocalDateTime;
         out.println();
         out.println("|        Метрика        |     Значение |");
         out.println("|-----------------------|--------------|");
-        out.println("|       Файл(-ы)        | " + report.fileName() + " |");
+        out.println("|       Файл(-ы)        | " + String.join(", ", report.fileNames()) + " |");
         out.println("|    Начальная дата     | " + startData + " |");
         out.println("|     Конечная дата     | " + endData + " |");
         out.println("|  Количество запросов  | " + report.requestCount() + " |");

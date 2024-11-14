@@ -22,7 +22,7 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println();
         out.println("|        Метрика        |     Значение |");
         out.println("|:---------------------:|:-------------:|");
-        out.println("|       Файл(-ы)        | " + report.fileName() + " |");
+        out.println("|       Файл(-ы)        | " + String.join(", ", report.fileNames()) + " |");
         out.println("|    Начальная дата     | " + startData + " |");
         out.println("|     Конечная дата     | " + endData + " |");
         out.println("|  Количество запросов  | " + report.requestCount() + " |");

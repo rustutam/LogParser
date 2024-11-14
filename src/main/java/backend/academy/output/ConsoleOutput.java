@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 
 public class ConsoleOutput extends StatisticsOutput {
+    private final String fileName = "console";
 
     @Override
     protected void printGeneralStatistics(GeneralStatisticsReport report, PrintStream out) {
@@ -16,7 +17,7 @@ public class ConsoleOutput extends StatisticsOutput {
         String endData = report.endData().map(LocalDateTime::toString).orElse("-");
         out.println("ОБЩАЯ ИНФОРМАЦИЯ");
         out.println();
-        out.println("Файл(-ы): " + report.fileName());
+        out.println("Файл(-ы): " + String.join(", ", report.fileNames()));
         out.println("Начальная дата: " + startData);
         out.println("Конечная дата: " + endData);
         out.println("Количество запросов: " + report.requestCount());
