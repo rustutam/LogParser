@@ -3,20 +3,28 @@ package backend.academy.readers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class LogFileReader extends Reader {
+public class LogFileReader extends Reader implements AutoCloseable {
+    private BufferedReader bufferedReader;
+
     @Override
     public Stream<String> readLogs(String path) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            return br.lines();
+            bufferedReader = new BufferedReader(new FileReader(path, StandardCharsets.UTF_8));
+            return bufferedReader.lines();
         } catch (IOException e) {
-            log.error("Ошибка в {}", e.getClass());
+            throw new RuntimeException("Ошибка при чтении файла " + path, e);
         }
-        return Stream.empty();
+    }
+
+    public void close() throws IOException {
+        if (bufferedReader != null) {
+            bufferedReader.close();
+        }
     }
 
 }
