@@ -1,6 +1,6 @@
 package backend.academy.parser;
 
-import backend.academy.HttpStatusCode;
+import backend.academy.model.HttpStatusCode;
 import backend.academy.model.LogRecord;
 import backend.academy.model.RequestModel;
 import java.time.LocalDateTime;

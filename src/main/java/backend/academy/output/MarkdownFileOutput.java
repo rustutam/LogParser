@@ -11,12 +11,14 @@ import lombok.Getter;
 
 @Getter
 public class MarkdownFileOutput extends StatisticsOutput {
-    private final String fileName = "report.md";
+    protected String markdownFileName = "report.md";
+    private static final String SEPARATOR = " | ";
 
     @Override
     protected void printGeneralStatistics(GeneralStatisticsReport report, PrintStream out) {
-        String startData = report.startData().map(LocalDateTime::toString).orElse("-");
-        String endData = report.endData().map(LocalDateTime::toString).orElse("-");
+        String startData = report.startData().equals(LocalDateTime.MIN) ? "-" : report.startData().toString();
+        String endData = report.endData().equals(LocalDateTime.MAX) ? "-" : report.startData().toString();
+        String sizeUnit = "b";
 
         out.println("#### Общая информация");
         out.println();
@@ -26,8 +28,8 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("|    Начальная дата     | " + startData + " |");
         out.println("|     Конечная дата     | " + endData + " |");
         out.println("|  Количество запросов  | " + report.requestCount() + " |");
-        out.println("| Средний размер ответа | " + report.averageResponseSize() + "b |");
-        out.println("|   95p размера ответа  | " + report.percentiles95() + "b |");
+        out.println("| Средний размер ответа | " + report.averageResponseSize() + sizeUnit);
+        out.println("|   95p размера ответа  | " + report.percentiles95() + sizeUnit);
         out.println();
         out.println();
     }
@@ -37,9 +39,9 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("#### Запрашиваемые ресурсы");
         out.println();
         out.println("|     Ресурс      | Количество |");
-        out.println("|:---------------:|-----------:|");
+        out.println("|:----------------:|-----------:|");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
-            .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
+            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
         out.println();
         out.println();
     }
@@ -52,7 +54,7 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("|:---:|:---------------------:|-----------:|");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((code, count) ->
-                out.println("| " + code.value() + " | " + code.description() + " | " + count + " |")
+                out.println("| " + code.value() + SEPARATOR + code.description() + SEPARATOR + count + " |")
             );
         out.println();
         out.println();
@@ -64,7 +66,7 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("|     Метод      | Количество |");
         out.println("|:---------------:|-----------:|");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
-            .forEach((resource, count) -> out.println("| " + resource + " | " + count + " |"));
+            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
         out.println();
         out.println();
     }

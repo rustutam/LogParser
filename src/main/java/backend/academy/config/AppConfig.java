@@ -4,14 +4,13 @@ import backend.academy.filters.FilterField;
 import backend.academy.model.Format;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 //Хранит параметры, полученные из командной строки, и предоставляет к ним доступ.
 public record AppConfig(
     String inputFilePath,
-    Optional<LocalDateTime> startDate,
-    Optional<LocalDateTime> endDate,
-    Optional<Format> format,
+    LocalDateTime startDate,
+    LocalDateTime endDate,
+    Format format,
     List<FilterField<?>> filterFieldList
 ) {
 

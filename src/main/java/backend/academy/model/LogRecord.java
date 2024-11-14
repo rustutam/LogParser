@@ -1,6 +1,5 @@
 package backend.academy.model;
 
-import backend.academy.HttpStatusCode;
 import java.time.LocalDateTime;
 
 public record LogRecord(

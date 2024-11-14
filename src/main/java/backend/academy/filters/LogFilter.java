@@ -3,7 +3,6 @@ package backend.academy.filters;
 import backend.academy.config.AppConfig;
 import backend.academy.model.LogRecord;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class LogFilter {
     private final AppConfig config;
@@ -12,42 +11,36 @@ public class LogFilter {
         this.config = config;
     }
 
-    public boolean filter(LogRecord record) {
-        return isWithinDateRange(record) &&
-            config.filterFieldList().stream().allMatch(filterField -> checkField(record, filterField));
+    public boolean filter(LogRecord logRecord) {
+        return isWithinDateRange(logRecord)
+            && config.filterFieldList().stream().allMatch(filterField -> checkField(logRecord, filterField));
     }
 
-    private boolean isWithinDateRange(LogRecord record) {
-        Optional<LocalDateTime> startDateOpt = config.startDate();
-        Optional<LocalDateTime> endDateOpt = config.endDate();
-        LocalDateTime logDate = record.timeLocal();
+    private boolean isWithinDateRange(LogRecord logRecord) {
+        LocalDateTime startDate = config.startDate();
+        LocalDateTime endDate = config.endDate();
+        LocalDateTime logDate = logRecord.timeLocal();
 
-        if (startDateOpt.isPresent() && endDateOpt.isPresent()) {
-            LocalDateTime startDate = startDateOpt.get();
-            LocalDateTime endDate = endDateOpt.get();
-            return !logDate.isBefore(startDate) && !logDate.isAfter(endDate);
-        } else if (startDateOpt.isPresent()) {
-            LocalDateTime startDate = startDateOpt.get();
-            return !logDate.isBefore(startDate);
-        } else if (endDateOpt.isPresent()) {
-            LocalDateTime endDate = endDateOpt.get();
-            return !logDate.isAfter(endDate);
-        }
-        return true;
+        return logDate.isAfter(startDate) && logDate.isBefore(endDate);
+
     }
 
-    private boolean checkField(LogRecord record, FilterField<?> filterField) {
+    private boolean checkField(LogRecord logRecord, FilterField<?> filterField) {
         return switch (filterField) {
-            case IpFilterField ipFilterField -> record.ip().equals(ipFilterField.value);
-            case UserFilterField userFilterField -> record.user().equals(userFilterField.value);
-            case DataFilterField dataFilterField -> record.timeLocal().isEqual(dataFilterField.value);
-            case MethodFilterField methodFilterField -> record.request().requestMethod().equals(methodFilterField.value);
-            case ResourceFilterField resourceFilterField -> record.request().requestResource().equals(resourceFilterField.value);
-            case ProtocolFilterField protocolFilterField -> record.request().protocolVersion().equals(protocolFilterField.value);
-            case ResponseCodeFilterField responseCodeFilterField -> record.responseCode().value() == responseCodeFilterField.value;
-            case BytesFilterField bytesFilterField -> record.bodyBytesSize() == bytesFilterField.value;
-            case RefererFilterField refererFilterField -> record.referer().equals(refererFilterField.value);
-            case AgentFilterField agentFilterField -> record.userAgent().contains(agentFilterField.value);
+            case IpFilterField ipFilterField -> logRecord.ip().equals(ipFilterField.value);
+            case UserFilterField userFilterField -> logRecord.user().equals(userFilterField.value);
+            case DataFilterField dataFilterField -> logRecord.timeLocal().isEqual(dataFilterField.value);
+            case MethodFilterField methodFilterField ->
+                logRecord.request().requestMethod().equals(methodFilterField.value);
+            case ResourceFilterField resourceFilterField ->
+                logRecord.request().requestResource().equals(resourceFilterField.value);
+            case ProtocolFilterField protocolFilterField ->
+                logRecord.request().protocolVersion().equals(protocolFilterField.value);
+            case ResponseCodeFilterField responseCodeFilterField ->
+                logRecord.responseCode().value() == responseCodeFilterField.value;
+            case BytesFilterField bytesFilterField -> logRecord.bodyBytesSize() == bytesFilterField.value;
+            case RefererFilterField refererFilterField -> logRecord.referer().equals(refererFilterField.value);
+            case AgentFilterField agentFilterField -> logRecord.userAgent().contains(agentFilterField.value);
             default -> throw new IllegalStateException("Unexpected value: " + filterField);
         };
     }

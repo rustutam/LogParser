@@ -1,7 +1,8 @@
-package backend.academy;
+package backend.academy.model;
 
 import lombok.Getter;
 
+@Getter
 public enum HttpStatusCode {
 
     //1xx: Informational
@@ -75,9 +76,7 @@ public enum HttpStatusCode {
     NOT_EXTENDED(510, "Not Extended"),
     NETWORK_AUTHENTICATION_REQUIRED(511, "Network Authentication Required");
 
-    @Getter
     private final int value;
-    @Getter
     private final String description;
 
     HttpStatusCode(int value, String description) {
@@ -91,22 +90,11 @@ public enum HttpStatusCode {
     }
 
     public static HttpStatusCode getByValue(int value) {
-        for(HttpStatusCode status : values()) {
-            if(status.value == value) return status;
+        for (HttpStatusCode status : values()) {
+            if (status.value == value) {
+                return status;
+            }
         }
         throw new IllegalArgumentException("Invalid status code: " + value);
-    }
-
-    public static String getDescriptionByCode(int value) {
-        for(HttpStatusCode status : values()) {
-            if(status.value == value) return status.description;
-        }
-        throw new IllegalArgumentException("Invalid status code: " + value);
-    }
-
-    public static void main(String[] args) {
-        HttpStatusCode a = HttpStatusCode.getByValue(200);
-        System.out.println(a.description);
-        System.out.println(a.value);
     }
 }

@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class FilePatternMatcher {
+    private FilePatternMatcher() {
+    }
+
     public static List<Path> findMatchingFiles(String globPattern) throws IOException {
         // Создаем PathMatcher для обработки GLOB-выражения
         PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
@@ -25,7 +28,7 @@ public class FilePatternMatcher {
                 .filter(matcher::matches)      // Фильтруем по GLOB-шаблону
                 .forEach(matchedFiles::add);   // Добавляем подходящие файлы в список
         } catch (IOException e) {
-            throw new IOException("Ошибка при поиске файлов: " + e.getMessage());
+            throw new IOException("Ошибка при поиске файлов: " + e.getMessage(), e);
         }
 
         return matchedFiles;

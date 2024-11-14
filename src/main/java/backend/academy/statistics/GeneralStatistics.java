@@ -8,19 +8,24 @@ import com.google.common.math.Stats;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public final class GeneralStatistics implements Statistics {
-    private final String fileName;
-    private final Optional<LocalDateTime> startData;
-    private final Optional<LocalDateTime> endData;
+    private static final double ROUND_NUM = 100.0;
+    private static final int PERCENTILE = 95;
+    private final List<String> fileNames;
+    private final LocalDateTime startData;
+    private final LocalDateTime endData;
     private final List<Double> responseSizes = new ArrayList<>();
     private double percentile95 = 0;
     private double mean = 0;
     private int requestCount = 0;
 
-    public GeneralStatistics(String fileName, Optional<LocalDateTime> startData, Optional<LocalDateTime> endData) {
-        this.fileName = fileName;
+    public GeneralStatistics(
+        List<String> fileNames,
+        LocalDateTime startData,
+        LocalDateTime endData
+    ) {
+        this.fileNames = fileNames;
         this.startData = startData;
         this.endData = endData;
     }
@@ -36,12 +41,12 @@ public final class GeneralStatistics implements Statistics {
     @Override
     public Report getReport() {
         if (!responseSizes.isEmpty()) {
-            percentile95 = round(Quantiles.percentiles().index(95).compute(responseSizes));
+            percentile95 = round(Quantiles.percentiles().index(PERCENTILE).compute(responseSizes));
             mean = round(Stats.meanOf(responseSizes));
         }
 
         return new GeneralStatisticsReport(
-            fileName,
+            fileNames,
             startData,
             endData,
             requestCount,
@@ -51,6 +56,6 @@ public final class GeneralStatistics implements Statistics {
     }
 
     private double round(double value) {
-        return Math.round(value * 100.0) / 100.0;
+        return Math.round(value * ROUND_NUM) / ROUND_NUM;
     }
 }

@@ -1,13 +1,9 @@
 package backend.academy.statistics;
 
-import backend.academy.HttpStatusCode;
+import backend.academy.model.HttpStatusCode;
 import backend.academy.model.LogRecord;
 import backend.academy.statistics.report.Report;
-import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
-import lombok.Getter;
-
-import java.util.HashMap;
 
 public final class ResponseCodesStatistics extends NameCountStatistics<HttpStatusCode> {
     @Override

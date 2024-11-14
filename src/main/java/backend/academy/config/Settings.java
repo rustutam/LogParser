@@ -3,6 +3,9 @@ package backend.academy.config;
 import java.time.format.DateTimeFormatter;
 
 public class Settings {
+    private Settings() {
+    }
+
     public static final int IP_GROUP = 1;
     public static final int USER_GROUP = 2;
     public static final int DATE_TIME_GROUP = 3;

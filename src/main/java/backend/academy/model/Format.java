@@ -5,8 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Format {
     MD("markdown"),
-    ADOC("adoc"),
-    CONSOLE("console");
+    ADOC("adoc");
 
     private final String value;
 

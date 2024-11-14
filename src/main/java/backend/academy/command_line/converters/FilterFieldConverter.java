@@ -25,12 +25,12 @@ public class FilterFieldConverter implements IStringConverter<FilterField<?>> {
     public FilterFieldConverter(String optionName) {
         this.optionName = optionName;
     }
+
     @Override
     public FilterField<?> convert(String value) {
         String[] parts = value.split(":", 2);
 
         if (parts.length != 2) {
-            log.error("Фильтр должен быть в формате field:value");
             throw new ParameterException("Фильтр должен быть в формате field:value");
         }
 

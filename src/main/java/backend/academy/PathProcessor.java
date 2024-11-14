@@ -6,12 +6,10 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class PathProcessor {
-    String path;
     PrintStream out;
     List<Path> paths;
 
     public PathProcessor(String path, PrintStream out) {
-        this.path = path;
         this.out = out;
         paths = processPath(path);
 

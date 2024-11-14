@@ -7,9 +7,7 @@ public sealed class StringFilterField extends FilterField<String> permits
     MethodFilterField,
     ProtocolFilterField,
     RefererFilterField,
-    ResourceFilterField
-
-{
+    ResourceFilterField {
     @Override
     public void parseValue(String value) {
         super.value = value;

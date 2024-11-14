@@ -1,20 +1,22 @@
 package backend.academy.parser;
 
-import backend.academy.HttpStatusCode;
 import backend.academy.config.Settings;
+import backend.academy.model.HttpStatusCode;
 import backend.academy.model.LogRecord;
+import backend.academy.model.RequestModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import backend.academy.model.RequestModel;
 import lombok.extern.log4j.Log4j2;
 import static java.lang.Integer.parseInt;
 
 @Log4j2
 public class LogParser {
+    private LogParser() {
+    }
 
     // Регулярное выражение для парсинга строки лога в формате NGINX
     private static final Pattern LOG_PATTERN = Pattern.compile(
@@ -26,12 +28,6 @@ public class LogParser {
         "dd/MMM/yyyy:HH:mm:ss Z",
         Locale.ENGLISH);
 
-    /**
-     * Метод для парсинга строки лога в объект LogRecord
-     *
-     * @param logLine строка лога
-     * @return Optional<LogRecord> or Optional.empty(), если строка не соответствует формату
-     */
     public static Optional<LogRecord> parseLogLine(String logLine) {
         Matcher matcher = LOG_PATTERN.matcher(logLine);
         if (matcher.matches()) {
@@ -45,7 +41,8 @@ public class LogParser {
 
                 RequestModel request = new RequestModel(requestMethod, resource, protocolVersion);
 
-                HttpStatusCode responseCode = HttpStatusCode.getByValue(parseInt(matcher.group(Settings.RESPONSE_CODE_GROUP)));
+                HttpStatusCode responseCode =
+                    HttpStatusCode.getByValue(parseInt(matcher.group(Settings.RESPONSE_CODE_GROUP)));
                 long bodyBytesSent = Long.parseLong(matcher.group(Settings.BODY_BYTES_SENT_GROUP));
                 String referer = matcher.group(Settings.REFERER_GROUP);
                 String userAgent = matcher.group(Settings.USER_AGENT_GROUP);

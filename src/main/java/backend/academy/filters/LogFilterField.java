@@ -16,13 +16,13 @@ public enum LogFilterField {
 
     private final String value;
 
-    LogFilterField(String value){
+    LogFilterField(String value) {
         this.value = value;
     }
 
     public static LogFilterField getFiled(String value) throws InvalidFilterValueException {
-        for (LogFilterField filed: values()){
-            if (filed.value.equalsIgnoreCase(value)){
+        for (LogFilterField filed : values()) {
+            if (filed.value.equalsIgnoreCase(value)) {
                 return filed;
             }
         }

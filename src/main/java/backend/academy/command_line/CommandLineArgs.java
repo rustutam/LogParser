@@ -6,9 +6,9 @@ import backend.academy.command_line.converters.FormatConverter;
 import backend.academy.filters.FilterField;
 import backend.academy.model.Format;
 import com.beust.jcommander.Parameter;
-import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class CommandLineArgs {
@@ -24,6 +24,7 @@ public class CommandLineArgs {
     @Parameter(names = "--format", description = "Output format", converter = FormatConverter.class)
     private Format format;
 
-    @Parameter(names = "--filter", description = "Field and value to filter logs", converter = FilterFieldConverter.class, variableArity = true)
+    @Parameter(names = "--filter", description = "Field and value to filter logs",
+        converter = FilterFieldConverter.class, variableArity = true)
     private List<FilterField<?>> filterFieldList;
 }
