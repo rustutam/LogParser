@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.model;
 
 import backend.academy.readers.Reader;
 import java.util.List;

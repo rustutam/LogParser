@@ -27,20 +27,23 @@ public class LogFilter {
 
     private boolean checkField(LogRecord logRecord, FilterField<?> filterField) {
         return switch (filterField) {
-            case IpFilterField ipFilterField -> logRecord.ip().equals(ipFilterField.value);
-            case UserFilterField userFilterField -> logRecord.user().equals(userFilterField.value);
-            case DataFilterField dataFilterField -> logRecord.timeLocal().isEqual(dataFilterField.value);
+            case IpFilterField ipFilterField -> logRecord.ip().equalsIgnoreCase(ipFilterField.value);
+            case UserFilterField userFilterField -> logRecord.user().equalsIgnoreCase(userFilterField.value);
+            case DateFilterField dateFilterField ->
+                logRecord.timeLocal().toLocalDate().isEqual(dateFilterField.value.toLocalDate());
             case MethodFilterField methodFilterField ->
-                logRecord.request().requestMethod().equals(methodFilterField.value);
+                logRecord.request().requestMethod().equalsIgnoreCase(methodFilterField.value);
             case ResourceFilterField resourceFilterField ->
-                logRecord.request().requestResource().equals(resourceFilterField.value);
+                logRecord.request().requestResource().equalsIgnoreCase(resourceFilterField.value);
             case ProtocolFilterField protocolFilterField ->
-                logRecord.request().protocolVersion().equals(protocolFilterField.value);
+                logRecord.request().protocolVersion().equalsIgnoreCase(protocolFilterField.value);
             case ResponseCodeFilterField responseCodeFilterField ->
                 logRecord.responseCode().value() == responseCodeFilterField.value;
             case BytesFilterField bytesFilterField -> logRecord.bodyBytesSize() == bytesFilterField.value;
-            case RefererFilterField refererFilterField -> logRecord.referer().equals(refererFilterField.value);
-            case AgentFilterField agentFilterField -> logRecord.userAgent().contains(agentFilterField.value);
+            case RefererFilterField refererFilterField ->
+                logRecord.referer().equalsIgnoreCase(refererFilterField.value);
+            case AgentFilterField agentFilterField ->
+                logRecord.userAgent().toLowerCase().contains(agentFilterField.value.toLowerCase());
             default -> throw new IllegalStateException("Unexpected value: " + filterField);
         };
     }

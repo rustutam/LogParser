@@ -2,6 +2,7 @@ package backend.academy;
 
 import backend.academy.config.AppConfig;
 import backend.academy.filters.LogFilter;
+import backend.academy.model.FileData;
 import backend.academy.model.Format;
 import backend.academy.output.AsciiDocFileOutput;
 import backend.academy.output.MarkdownFileOutput;

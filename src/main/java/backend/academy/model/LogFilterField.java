@@ -1,11 +1,11 @@
-package backend.academy.filters;
+package backend.academy.model;
 
-import backend.academy.exceptions.InvalidFilterValueException;
+import backend.academy.exceptions.InvalidFilterFieldException;
 
 public enum LogFilterField {
     IP("ip"),
     USER("user"),
-    DATA("data"),
+    DATE("date"),
     REQUEST_METHOD("method"),
     REQUEST_RESOURCE("resource"),
     REQUEST_PROTOCOL_VERSION("protocol"),
@@ -20,13 +20,13 @@ public enum LogFilterField {
         this.value = value;
     }
 
-    public static LogFilterField getFiled(String value) throws InvalidFilterValueException {
+    public static LogFilterField getField(String value) throws InvalidFilterFieldException {
         for (LogFilterField filed : values()) {
             if (filed.value.equalsIgnoreCase(value)) {
                 return filed;
             }
         }
-        throw new InvalidFilterValueException("Invalid field value: " + value);
+        throw new InvalidFilterFieldException("Invalid field value: " + value);
     }
 }
 

@@ -9,20 +9,20 @@ import lombok.extern.log4j.Log4j2;
 import static backend.academy.config.Settings.INPUT_DATA_FORMATTER;
 
 @Log4j2
-public class DataConverter implements IStringConverter<LocalDateTime> {
+public class DateConverter implements IStringConverter<LocalDateTime> {
     private final String optionName;
 
-    public DataConverter(String optionName) {
+    public DateConverter(String optionName) {
         this.optionName = optionName;
     }
 
     @Override
-    public LocalDateTime convert(String data) {
+    public LocalDateTime convert(String inputDate) {
         try {
-            LocalDate date = LocalDate.parse(data, INPUT_DATA_FORMATTER);
+            LocalDate date = LocalDate.parse(inputDate, INPUT_DATA_FORMATTER);
             return date.atStartOfDay();
         } catch (DateTimeParseException e) {
-            throw new ParameterException("Неверное значение для " + optionName + ": " + data, e);
+            throw new ParameterException("Неверное значение для " + optionName + ": " + inputDate, e);
         }
     }
 }

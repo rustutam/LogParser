@@ -4,16 +4,16 @@ import backend.academy.exceptions.InvalidFilterFieldException;
 import backend.academy.exceptions.InvalidFilterValueException;
 import backend.academy.filters.AgentFilterField;
 import backend.academy.filters.BytesFilterField;
-import backend.academy.filters.DataFilterField;
+import backend.academy.filters.DateFilterField;
 import backend.academy.filters.FilterField;
 import backend.academy.filters.IpFilterField;
-import backend.academy.filters.LogFilterField;
 import backend.academy.filters.MethodFilterField;
 import backend.academy.filters.ProtocolFilterField;
 import backend.academy.filters.RefererFilterField;
 import backend.academy.filters.ResourceFilterField;
 import backend.academy.filters.ResponseCodeFilterField;
 import backend.academy.filters.UserFilterField;
+import backend.academy.model.LogFilterField;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +39,7 @@ public class FilterFieldConverter implements IStringConverter<FilterField<?>> {
 
         LogFilterField field;
         try {
-            field = LogFilterField.getFiled(maybeField);
+            field = LogFilterField.getField(maybeField);
             return getFilterField(field, maybeValue);
 
         } catch (InvalidFilterFieldException e) {
@@ -56,7 +56,7 @@ public class FilterFieldConverter implements IStringConverter<FilterField<?>> {
             switch (field) {
                 case IP -> new IpFilterField();
                 case USER -> new UserFilterField();
-                case DATA -> new DataFilterField();
+                case DATE -> new DateFilterField();
                 case REQUEST_METHOD -> new MethodFilterField();
                 case REQUEST_RESOURCE -> new ResourceFilterField();
                 case REQUEST_PROTOCOL_VERSION -> new ProtocolFilterField();

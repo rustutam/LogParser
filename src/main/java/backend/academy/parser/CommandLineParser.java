@@ -10,9 +10,7 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 public class CommandLineParser {
     String[] args;
 
@@ -20,7 +18,7 @@ public class CommandLineParser {
         this.args = args;
     }
 
-    public AppConfig parseCommandLine(PrintStream out) {
+    public AppConfig parseCommandLine(PrintStream out) throws ParameterException {
         try {
             CommandLineArgs commandLineArgs = getCommandLineArgs();
 
@@ -36,8 +34,8 @@ public class CommandLineParser {
             return new AppConfig(path, from, to, format, filterFields);
         } catch (ParameterException e) {
             out.println(e.getMessage());
+            throw e;
         }
-        return null;
     }
 
     private CommandLineArgs getCommandLineArgs() {
