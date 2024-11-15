@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LogParserTest {
 
@@ -23,18 +22,17 @@ class LogParserTest {
         Optional<LogRecord> result = LogParser.parseLogLine(logLine);
 
         //Assert
-        assertTrue(result.isPresent());
-        LogRecord record = result.get();
+        LogRecord logRecord = result.orElseThrow();
 
-        assertEquals("127.0.0.1", record.ip());
-        assertEquals("user", record.user());
+        assertEquals("127.0.0.1", logRecord.ip());
+        assertEquals("user", logRecord.user());
         assertEquals(LocalDateTime.of(2020, 10, 10, 13, 55, 36).atOffset(ZoneOffset.UTC).toLocalDateTime(),
-            record.timeLocal());
-        assertEquals(new RequestModel("GET", "/index.html", "HTTP/1.1"), record.request());
-        assertEquals(HttpStatusCode.OK, record.responseCode());
-        assertEquals(1234, record.bodyBytesSize());
-        assertEquals("http://example.com", record.referer());
-        assertEquals("Mozilla/5.0", record.userAgent());
+            logRecord.timeLocal());
+        assertEquals(new RequestModel("GET", "/index.html", "HTTP/1.1"), logRecord.request());
+        assertEquals(HttpStatusCode.OK, logRecord.responseCode());
+        assertEquals(1234, logRecord.bodyBytesSize());
+        assertEquals("http://example.com", logRecord.referer());
+        assertEquals("Mozilla/5.0", logRecord.userAgent());
     }
 
     @Test
@@ -51,18 +49,17 @@ class LogParserTest {
             "127.0.0.1 - user [10/Oct/2020:13:55:36 +0000] \"GET /index.html HTTP/1.1\" 200 1234 \"-\" \"-\"";
         Optional<LogRecord> result = LogParser.parseLogLine(logLine);
 
-        assertTrue(result.isPresent());
-        LogRecord record = result.get();
+        LogRecord logRecord = result.orElseThrow();
 
-        assertEquals("127.0.0.1", record.ip());
-        assertEquals("user", record.user());
+        assertEquals("127.0.0.1", logRecord.ip());
+        assertEquals("user", logRecord.user());
         assertEquals(LocalDateTime.of(2020, 10, 10, 13, 55, 36).atOffset(ZoneOffset.UTC).toLocalDateTime(),
-            record.timeLocal());
-        assertEquals(new RequestModel("GET", "/index.html", "HTTP/1.1"), record.request());
-        assertEquals(HttpStatusCode.OK, record.responseCode());
-        assertEquals(1234, record.bodyBytesSize());
-        assertEquals("-", record.referer());
-        assertEquals("-", record.userAgent());
+            logRecord.timeLocal());
+        assertEquals(new RequestModel("GET", "/index.html", "HTTP/1.1"), logRecord.request());
+        assertEquals(HttpStatusCode.OK, logRecord.responseCode());
+        assertEquals(1234, logRecord.bodyBytesSize());
+        assertEquals("-", logRecord.referer());
+        assertEquals("-", logRecord.userAgent());
     }
 
 }
