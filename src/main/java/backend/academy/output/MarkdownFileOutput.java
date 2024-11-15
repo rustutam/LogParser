@@ -31,8 +31,8 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("|    Начальная дата     | " + startData + " |");
         out.println("|     Конечная дата     | " + endData + " |");
         out.println("|  Количество запросов  | " + report.requestCount() + " |");
-        out.println("| Средний размер ответа | " + report.averageResponseSize() + sizeUnit);
-        out.println("|   95p размера ответа  | " + report.percentiles95() + sizeUnit);
+        out.println("| Средний размер ответа | " + report.averageResponseSize() + sizeUnit + " |");
+        out.println("|   95p размера ответа  | " + report.percentiles95() + sizeUnit + " |");
         out.println();
         out.println();
     }
