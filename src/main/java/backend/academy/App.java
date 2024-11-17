@@ -13,6 +13,7 @@ import backend.academy.readers.LogFileReader;
 import backend.academy.readers.Reader;
 import backend.academy.statistics.GeneralStatistics;
 import backend.academy.statistics.HttpMethodStatistics;
+import backend.academy.statistics.IpStatistics;
 import backend.academy.statistics.ResourcesStatistics;
 import backend.academy.statistics.ResponseCodesStatistics;
 import backend.academy.statistics.Statistics;
@@ -37,7 +38,8 @@ public class App {
                 new GeneralStatistics(fileData.fileNames(), appConfig.startDate(), appConfig.endDate()),
                 new ResourcesStatistics(),
                 new ResponseCodesStatistics(),
-                new HttpMethodStatistics()
+                new HttpMethodStatistics(),
+                new IpStatistics()
             );
 
         LogFilter logFilter = new LogFilter(appConfig);

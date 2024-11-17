@@ -3,6 +3,7 @@ package backend.academy.output;
 import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
 import backend.academy.statistics.report.HttpMethodStatisticsReport;
+import backend.academy.statistics.report.IpStatisticsReport;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import java.io.PrintStream;
@@ -37,7 +38,6 @@ import lombok.Getter;
         out.println("|   95p размера ответа   | " + report.percentiles95() + sizeUnit);
         out.println(ASCII_TABLE_FORMAT);
 
-
     }
 
     @Override
@@ -70,6 +70,17 @@ import lombok.Getter;
         out.println(COLS_2_1_OPTIONS_HEADER);
         out.println(ASCII_TABLE_FORMAT);
         out.println("|     Метод      | Количество");
+        getTopNElements(report.statistics(), Settings.FILTER_VALUE)
+            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count));
+        out.println(ASCII_TABLE_FORMAT);
+    }
+
+    @Override
+    protected void printIpStatistics(IpStatisticsReport report, PrintStream out) {
+        out.println("== Ip адреса");
+        out.println(COLS_2_1_OPTIONS_HEADER);
+        out.println(ASCII_TABLE_FORMAT);
+        out.println("|     Ip адрес      | Количество");
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count));
         out.println(ASCII_TABLE_FORMAT);

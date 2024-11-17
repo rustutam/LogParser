@@ -3,6 +3,7 @@ package backend.academy.output;
 import backend.academy.config.Settings;
 import backend.academy.statistics.report.GeneralStatisticsReport;
 import backend.academy.statistics.report.HttpMethodStatisticsReport;
+import backend.academy.statistics.report.IpStatisticsReport;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import java.io.PrintStream;
@@ -12,6 +13,7 @@ import lombok.Getter;
 @Getter
 public class MarkdownFileOutput extends StatisticsOutput {
     private static final String SEPARATOR = " | ";
+    public static final String TABLE_SEPARATOR = "|:---------------:|-----------:|";
 
     public MarkdownFileOutput() {
         this.fileName = "report.md";
@@ -42,7 +44,7 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("#### Запрашиваемые ресурсы");
         out.println();
         out.println("|     Ресурс      | Количество |");
-        out.println("|:----------------:|-----------:|");
+        out.println(TABLE_SEPARATOR);
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
         out.println();
@@ -67,7 +69,18 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println("#### Методы Http");
         out.println();
         out.println("|     Метод      | Количество |");
-        out.println("|:---------------:|-----------:|");
+        out.println(TABLE_SEPARATOR);
+        getTopNElements(report.statistics(), Settings.FILTER_VALUE)
+            .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
+        out.println();
+        out.println();
+    }
+
+    @Override protected void printIpStatistics(IpStatisticsReport report, PrintStream out) {
+        out.println("#### Ip адреса");
+        out.println();
+        out.println("|       Ip        | Количество |");
+        out.println(TABLE_SEPARATOR);
         getTopNElements(report.statistics(), Settings.FILTER_VALUE)
             .forEach((resource, count) -> out.println("| " + resource + SEPARATOR + count + " |"));
         out.println();

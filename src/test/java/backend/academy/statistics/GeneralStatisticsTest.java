@@ -4,10 +4,9 @@ import backend.academy.model.HttpStatusCode;
 import backend.academy.model.LogRecord;
 import backend.academy.model.RequestModel;
 import backend.academy.statistics.report.GeneralStatisticsReport;
-import backend.academy.statistics.report.Report;
-import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GeneralStatisticsTest {
@@ -55,7 +54,7 @@ class GeneralStatisticsTest {
         // Act
         generalStatistics.updateStatistics(logRecord1);
         generalStatistics.updateStatistics(logRecord2);
-        GeneralStatisticsReport report =(GeneralStatisticsReport) generalStatistics.getReport();
+        GeneralStatisticsReport report = (GeneralStatisticsReport) generalStatistics.getReport();
 
         // Assert
         assertEquals(fileName, report.fileNames().getFirst());
@@ -71,6 +70,7 @@ class GeneralStatisticsTest {
     void emptyStatistics() {
         // Arrange
         String fileName = "file1";
+
         LocalDateTime startDate = LocalDateTime.of(2024, 6, 15, 12, 0);
         LocalDateTime endDate = LocalDateTime.of(2025, 6, 15, 12, 0);
         GeneralStatistics generalStatistics = new GeneralStatistics(
@@ -80,7 +80,7 @@ class GeneralStatisticsTest {
         );
 
         // Act
-        GeneralStatisticsReport report =(GeneralStatisticsReport) generalStatistics.getReport();
+        GeneralStatisticsReport report = (GeneralStatisticsReport) generalStatistics.getReport();
 
         // Assert
         assertEquals(fileName, report.fileNames().getFirst());

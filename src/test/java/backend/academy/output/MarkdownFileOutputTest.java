@@ -3,6 +3,7 @@ package backend.academy.output;
 import backend.academy.model.HttpStatusCode;
 import backend.academy.statistics.report.GeneralStatisticsReport;
 import backend.academy.statistics.report.HttpMethodStatisticsReport;
+import backend.academy.statistics.report.IpStatisticsReport;
 import backend.academy.statistics.report.ResourcesStatisticsReport;
 import backend.academy.statistics.report.ResponseCodesStatisticsReport;
 import org.junit.jupiter.api.BeforeEach;
@@ -139,6 +140,32 @@ class MarkdownFileOutputTest {
 
         // Act
         markdownFileOutput.printHttpMethodStatistics(report, out);
+
+        // Assert
+        String actualOutput = outputStream.toString().trim().replace("\r\n", "\n");
+        String normalizedExpectedOutput = expectedOutput.trim().replace("\r\n", "\n");
+        assertEquals(normalizedExpectedOutput, actualOutput);
+    }
+
+    @Test
+    void printIpStatistics() {
+        // Arrange
+        IpStatisticsReport report = Mockito.mock(IpStatisticsReport.class);
+        HashMap<String, Integer> stat = new HashMap<>(Map.of("192.168.0.0", 80, "127.0.0.0", 20));
+        when(report.statistics()).thenReturn(stat);
+
+        String expectedOutput = """
+            #### Ip адреса
+
+            |       Ip        | Количество |
+            |:---------------:|-----------:|
+            | 192.168.0.0 | 80 |
+            | 127.0.0.0 | 20 |
+
+            """;
+
+        // Act
+        markdownFileOutput.printIpStatistics(report, out);
 
         // Assert
         String actualOutput = outputStream.toString().trim().replace("\r\n", "\n");

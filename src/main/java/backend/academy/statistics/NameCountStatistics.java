@@ -1,13 +1,12 @@
 package backend.academy.statistics;
 
 import backend.academy.model.LogRecord;
-import backend.academy.statistics.report.Report;
 import java.util.HashMap;
 import lombok.Getter;
 
 @Getter
-public sealed abstract class NameCountStatistics<T> implements Statistics
-    permits HttpMethodStatistics, ResourcesStatistics, ResponseCodesStatistics {
+public abstract sealed class NameCountStatistics<T> implements Statistics
+    permits HttpMethodStatistics, ResourcesStatistics, ResponseCodesStatistics, IpStatistics {
     protected HashMap<T, Integer> statistics = new HashMap<>();
 
     @Override
@@ -18,6 +17,4 @@ public sealed abstract class NameCountStatistics<T> implements Statistics
 
     protected abstract T extractKey(LogRecord logRecord);
 
-    @Override
-    public abstract Report getReport();
 }
