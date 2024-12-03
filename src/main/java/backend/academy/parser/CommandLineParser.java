@@ -6,19 +6,27 @@ import backend.academy.filters.FilterField;
 import backend.academy.model.Format;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+/**
+ * Класс для парсинга аргументов командной строки и создания конфигурации приложения {@link AppConfig}.
+ */
+@Log4j2
+@AllArgsConstructor
 public class CommandLineParser {
     String[] args;
 
-    public CommandLineParser(String[] args) {
-        this.args = args;
-    }
-
-    public AppConfig parseCommandLine(PrintStream out) throws ParameterException {
+    /**
+     * Парсит аргументы командной строки и создает объект {@link AppConfig}.
+     *
+     * @return объект {@link AppConfig}, содержащий параметры конфигурации
+     * @throws ParameterException если аргументы командной строки некорректны
+     */
+    public AppConfig parseCommandLine() throws ParameterException {
         try {
             CommandLineArgs commandLineArgs = getCommandLineArgs();
 
@@ -33,11 +41,17 @@ public class CommandLineParser {
                 Optional.ofNullable(commandLineArgs.filterFieldList()).orElse(List.of());
             return new AppConfig(path, from, to, format, filterFields);
         } catch (ParameterException e) {
-            out.println(e.getMessage());
+            log.error(e.getMessage());
             throw e;
         }
     }
 
+
+    /**
+     * Создает и парсит объект {@link CommandLineArgs} из аргументов командной строки.
+     *
+     * @return объект {@link CommandLineArgs}, содержащий аргументы командной строки
+     */
     private CommandLineArgs getCommandLineArgs() {
         CommandLineArgs commandLineArgs = new CommandLineArgs();
         JCommander.newBuilder()

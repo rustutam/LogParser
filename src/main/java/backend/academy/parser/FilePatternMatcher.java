@@ -9,11 +9,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+/**
+ * Класс для поиска файлов, соответствующих заданному GLOB-шаблону.
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FilePatternMatcher {
-    private FilePatternMatcher() {
-    }
 
+    /**
+     * Ищет файлы, соответствующие заданному GLOB-шаблону.
+     *
+     * @param globPattern GLOB-шаблон для поиска файлов
+     * @return список путей к файлам, соответствующим шаблону
+     * @throws IOException если произошла ошибка при поиске файлов
+     */
     public static List<Path> findMatchingFiles(String globPattern) throws IOException {
         // Создаем PathMatcher для обработки GLOB-выражения
         PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);

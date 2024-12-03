@@ -65,7 +65,8 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println();
     }
 
-    @Override protected void printHttpMethodStatistics(HttpMethodStatisticsReport report, PrintStream out) {
+    @Override
+    protected void printHttpMethodStatistics(HttpMethodStatisticsReport report, PrintStream out) {
         out.println("#### Методы Http");
         out.println();
         out.println("|     Метод      | Количество |");
@@ -76,7 +77,8 @@ public class MarkdownFileOutput extends StatisticsOutput {
         out.println();
     }
 
-    @Override protected void printIpStatistics(IpStatisticsReport report, PrintStream out) {
+    @Override
+    protected void printIpStatistics(IpStatisticsReport report, PrintStream out) {
         out.println("#### Ip адреса");
         out.println();
         out.println("|       Ip        | Количество |");

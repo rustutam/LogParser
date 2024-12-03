@@ -1,23 +1,31 @@
 package backend.academy.config;
 
 import java.time.format.DateTimeFormatter;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Settings {
-    private Settings() {
-    }
-
-    public static final int IP_GROUP = 1;
-    public static final int USER_GROUP = 2;
-    public static final int DATE_TIME_GROUP = 3;
-    public static final int REQUEST_METHOD_GROUP = 4;
-    public static final int RESOURCE_GROUP = 5;
-    public static final int PROTOCOL_VERSION_GROUP = 6;
-    public static final int RESPONSE_CODE_GROUP = 7;
-    public static final int BODY_BYTES_SENT_GROUP = 8;
-    public static final int REFERER_GROUP = 9;
-    public static final int USER_AGENT_GROUP = 10;
-
     public static final int FILTER_VALUE = 3;
-
     public static final DateTimeFormatter INPUT_DATA_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String OUTPUT_BASE_DIRECTORY = "src/main/resources/statistics";
+
+    @Getter
+    @AllArgsConstructor
+    public enum Group {
+        IP(1),
+        USER(2),
+        DATE_TIME(3),
+        REQUEST_METHOD(4),
+        RESOURCE(5),
+        PROTOCOL_VERSION(6),
+        RESPONSE_CODE(7),
+        BODY_BYTES_SENT(8),
+        REFERER(9),
+        USER_AGENT(10);
+
+        private final int value;
+    }
 }

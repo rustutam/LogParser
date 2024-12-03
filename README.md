@@ -49,7 +49,17 @@
 |   `referer`   |    	`referer:<реферер>`    |
 |   `agent`	    |    `agent:<User-Agent>`    |
 
+## Расположение файлов логов
+
+Сохраняйте файлы логов в директории `src/main/resources/logs`. 
+
+Ввод в командную строку: `--path **/resources/logs/*`.
+
 ## Вывод статистики
+
+Выходной отчет будет сгенерирован в директории `src/main/resources/statistics` с именем файла, указанным в конфигурации приложения. 
+
+Например, если в конфигурации указано `report.md`, отчет будет сгенерирован как `src/main/resources/statistics/report.md`.
 
 ### Markdown (md)
 

@@ -1,7 +1,9 @@
 package backend.academy.model;
 
 import backend.academy.exceptions.InvalidFilterFieldException;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public enum LogFilterField {
     IP("ip"),
     USER("user"),
@@ -15,10 +17,6 @@ public enum LogFilterField {
     USER_AGENT("agent");
 
     private final String value;
-
-    LogFilterField(String value) {
-        this.value = value;
-    }
 
     public static LogFilterField getField(String value) throws InvalidFilterFieldException {
         for (LogFilterField filed : values()) {

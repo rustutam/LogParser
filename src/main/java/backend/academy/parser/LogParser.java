@@ -10,13 +10,14 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import static java.lang.Integer.parseInt;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Log4j2
 public class LogParser {
-    private LogParser() {
-    }
 
     // Регулярное выражение для парсинга строки лога в формате NGINX
     private static final Pattern LOG_PATTERN = Pattern.compile(
@@ -32,20 +33,21 @@ public class LogParser {
         Matcher matcher = LOG_PATTERN.matcher(logLine);
         if (matcher.matches()) {
             try {
-                String ip = matcher.group(Settings.IP_GROUP);
-                String user = matcher.group(Settings.USER_GROUP);
-                LocalDateTime dateTime = LocalDateTime.parse(matcher.group(Settings.DATE_TIME_GROUP), DATE_FORMATTER);
-                String requestMethod = matcher.group(Settings.REQUEST_METHOD_GROUP);
-                String resource = matcher.group(Settings.RESOURCE_GROUP);
-                String protocolVersion = matcher.group(Settings.PROTOCOL_VERSION_GROUP);
+                String ip = matcher.group(Settings.Group.IP.value());
+                String user = matcher.group(Settings.Group.USER.value());
+                LocalDateTime dateTime =
+                    LocalDateTime.parse(matcher.group(Settings.Group.DATE_TIME.value()), DATE_FORMATTER);
+                String requestMethod = matcher.group(Settings.Group.REQUEST_METHOD.value());
+                String resource = matcher.group(Settings.Group.RESOURCE.value());
+                String protocolVersion = matcher.group(Settings.Group.PROTOCOL_VERSION.value());
 
                 RequestModel request = new RequestModel(requestMethod, resource, protocolVersion);
 
                 HttpStatusCode responseCode =
-                    HttpStatusCode.getByValue(parseInt(matcher.group(Settings.RESPONSE_CODE_GROUP)));
-                long bodyBytesSent = Long.parseLong(matcher.group(Settings.BODY_BYTES_SENT_GROUP));
-                String referer = matcher.group(Settings.REFERER_GROUP);
-                String userAgent = matcher.group(Settings.USER_AGENT_GROUP);
+                    HttpStatusCode.getByValue(parseInt(matcher.group(Settings.Group.RESPONSE_CODE.value())));
+                long bodyBytesSent = Long.parseLong(matcher.group(Settings.Group.BODY_BYTES_SENT.value()));
+                String referer = matcher.group(Settings.Group.REFERER.value());
+                String userAgent = matcher.group(Settings.Group.USER_AGENT.value());
 
                 return Optional.of(new LogRecord(
                     ip,

@@ -16,15 +16,21 @@ import backend.academy.filters.UserFilterField;
 import backend.academy.model.LogFilterField;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+/**
+ * Класс-конвертер для преобразования строкового представления поля фильтра в объект {@link FilterField}.
+ * Этот класс реализует интерфейс {@link IStringConverter} из JCommander.
+ * <p>
+ * Ожидаемый формат входной строки: "field:value", где "field" - это имя поля фильтра,
+ * а "value" - значение, которое нужно распарсить для этого поля.
+ * </p>
+ */
 @Log4j2
+@AllArgsConstructor
 public class FilterFieldConverter implements IStringConverter<FilterField<?>> {
     private final String optionName;
-
-    public FilterFieldConverter(String optionName) {
-        this.optionName = optionName;
-    }
 
     @Override
     public FilterField<?> convert(String value) {

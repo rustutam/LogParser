@@ -17,19 +17,16 @@ import backend.academy.statistics.IpStatistics;
 import backend.academy.statistics.ResourcesStatistics;
 import backend.academy.statistics.ResponseCodesStatistics;
 import backend.academy.statistics.Statistics;
-import java.io.PrintStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@AllArgsConstructor
+@Log4j2
 public class App {
     private final AppConfig appConfig;
-    private final PrintStream out;
-
-    public App(AppConfig appConfig, PrintStream out) {
-        this.appConfig = appConfig;
-        this.out = out;
-    }
 
     public void run() {
         FileData fileData = getFileData(appConfig.inputFilePath());
@@ -53,10 +50,10 @@ public class App {
                 .filter(logFilter::filter)
                 .forEach(logRecord -> statistics.forEach(statistic -> statistic.updateStatistics(logRecord)));
         } catch (Exception e) {
-            out.println("Ошибка при чтении файла: " + e.getMessage());
+            log.error("Ошибка при чтении файла: {}", e.getMessage());
         }
 
-        StatisticsFileWriter.writeStatisticsToFile(getOutput(appConfig.format()), statistics, out);
+        StatisticsFileWriter.writeStatisticsToFile(getOutput(appConfig.format()), statistics);
     }
 
     private FileData getFileData(String path) {
@@ -67,7 +64,7 @@ public class App {
                 List.of(path)
             );
         } else {
-            PathProcessor pathProcessor = new PathProcessor(appConfig.inputFilePath(), out);
+            PathProcessor pathProcessor = new PathProcessor(path);
             return new FileData(
                 pathProcessor.getFileNames(),
                 new LogFileReader(),

@@ -3,8 +3,6 @@ package backend.academy.parser;
 import backend.academy.config.AppConfig;
 import backend.academy.model.Format;
 import com.beust.jcommander.ParameterException;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,8 +19,6 @@ class CommandLineParserTest {
             {"--path", "logs/log.txt", "--from", "2023-01-01", "--to", "2023-12-31", "--format", "markdown", "--filter",
                 "code:200", "--filter", "ip:192.168.0.0"};
         CommandLineParser parser = new CommandLineParser(args);
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(outContent);
 
         String path = "logs/log.txt";
         LocalDateTime from = LocalDateTime.of(2023, 1, 1, 0, 0);
@@ -30,7 +26,7 @@ class CommandLineParserTest {
         Format format = Format.MD;
         int filtersCount = 2;
         // Act
-        AppConfig config = parser.parseCommandLine(out);
+        AppConfig config = parser.parseCommandLine();
 
         // Assert
         assertEquals(path, config.inputFilePath());
@@ -46,12 +42,9 @@ class CommandLineParserTest {
         // Arrange
         String[] args = {"--path", "logs/", "--from", "2023-12-31", "--to", "2023-01-01"};
         CommandLineParser parser = new CommandLineParser(args);
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(outContent);
 
         // Act & Assert
-        assertThrows(ParameterException.class, () -> parser.parseCommandLine(out));
-        assertTrue(outContent.toString().contains("Дата начала должна быть меньше даты окончания"));
+        assertThrows(ParameterException.class, parser::parseCommandLine);
     }
 
     @Test
@@ -59,11 +52,9 @@ class CommandLineParserTest {
         // Arrange
         String[] args = {"--from", "2023-01-01T00:00", "--to", "2023-12-31T23:59"};
         CommandLineParser parser = new CommandLineParser(args);
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(outContent);
-        System.out.println(out.toString());
+
         // Act & Assert
-        assertThrows(ParameterException.class, () -> parser.parseCommandLine(out));
+        assertThrows(ParameterException.class, parser::parseCommandLine);
     }
 
     @Test
@@ -71,11 +62,9 @@ class CommandLineParserTest {
         // Arrange
         String[] args = {"--path", "logs/"};
         CommandLineParser parser = new CommandLineParser(args);
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(outContent);
 
         // Act
-        AppConfig config = parser.parseCommandLine(out);
+        AppConfig config = parser.parseCommandLine();
 
         // Assert
         assertEquals("logs/", config.inputFilePath());

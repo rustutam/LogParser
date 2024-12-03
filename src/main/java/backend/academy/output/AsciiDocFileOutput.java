@@ -10,7 +10,8 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
-@Getter public class AsciiDocFileOutput extends StatisticsOutput {
+@Getter
+public class AsciiDocFileOutput extends StatisticsOutput {
     private static final String COLS_2_1_OPTIONS_HEADER = "[cols=\"2,1\", options=\"header\"]";
     private static final String COLS_1_2_1_OPTIONS_HEADER = "[cols=\"1,2,1\", options=\"header\"]";
     private static final String ASCII_TABLE_FORMAT = "|===";

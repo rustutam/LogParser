@@ -1,7 +1,9 @@
 package backend.academy.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public enum HttpStatusCode {
 
@@ -78,11 +80,6 @@ public enum HttpStatusCode {
 
     private final int value;
     private final String description;
-
-    HttpStatusCode(int value, String description) {
-        this.value = value;
-        this.description = description;
-    }
 
     @Override
     public String toString() {
